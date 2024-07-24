@@ -1,25 +1,56 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react'
+import { Col, Container, Row } from 'react-bootstrap';
+import { NavbarComponent, Hasil, ListCategories, Menus } from './components';
+import { API_URL } from './utils/constans';
+import axios from 'axios';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+export default class App extends Component {
+  constructor(props) {
+    super(props)
+  
+    this.state = {
+      menus: [],
+    }
+  }
+
+  componentDidMount(){
+    axios
+    .get(API_URL+"products")
+    .then((response) => {
+        const menus = response.data;
+        this.setState({ menus });
+    })
+    .catch(error => {
+      console.log(error);
+    })
+  }
+
+  render() {
+    const { menus } = this.state
+    return (
+      <div className="App">
+      <NavbarComponent />
+        <div className='mt-3'>
+          <Container fluid>
+          <Row>
+            <ListCategories />
+            <Col>
+              <h4><strong>Daftar Produk</strong></h4>
+              <hr />
+              <Row>
+                {menus && menus.map((menu) => (
+                  <Menus 
+                    key={menu.id}
+                    menu={menu}
+                  />
+                ))}
+              </Row>
+            </Col>
+            <Hasil />
+          </Row>
+          </Container>
+        </div>
     </div>
-  );
+    )
+  }
 }
-
-export default App;
