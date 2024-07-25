@@ -23,6 +23,10 @@ body {
   float: right;
 }
 
+.btn-primary {
+  background-color: #1557AE !important;
+}
+
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
